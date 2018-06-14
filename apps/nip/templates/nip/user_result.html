@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'nip/css/style.css' %}" media="screen" title="no title"  charset="utf-8">
+    <link rel="stylesheet" href="../../static/nip/style.css">
+
+<style>
+    * {
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    }
+    .email {
+        display: inline-block;
+        margin-left: 50px;
+        /* margin-top: 20px; */ 
+        width: 90px;
+        padding: 10px;
+        border-radius: 10px;
+        font-size: 20px;
+    } 
+    .profile, .logout {
+        display: inline;
+    }
+    .profile{
+        margin-left: 600px;
+        margin-right:40px;
+    }
+    h1 {
+        margin-right: 500px;
+    }
+    h4,img {
+        display: inline-block;
+    }
+    .left-LOGO1{
+        margin: -55px 0px 0px -35px;
+}
+    .header1{
+    margin: 0px 0 0 0;
+    height: 65px;
+	}
+    .main_content{
+        /* width:700px; */
+        margin-top:50px;
+        margin-left:300px;
+    }
+    .profile_pic{
+        height:100px;
+        margin-top:10px;
+    }
+    .user_name{
+        display:inline-block;
+        vertical-align: top;
+    }
+    .search_result{
+        display: inline-block;
+		text-align: center;
+		vertical-align: middle;
+		line-height: 90px;
+		position: absolute;
+		margin-left:20px;
+    }
+</style>
+</head>
+<body>
+    <div class="wrapper">
+            <div class="header header1">
+                    <div class="left-LOGO left-LOGO1">
+                        <a href="/home"><img class="logo" src="https://mir-cdn.behance.net/v1/rendition/project_modules/disp/70702f63826029.5abd519e04f31.png" alt="nip_logo" /></a>
+                    </div>
+                    <div class="right-boxes">
+                            <div class="logout-button">
+                                    <a href="/map">Map</a>
+                                </div>
+                            <div class="profile-button">
+                                <a href="/profile/{{request.session.id}}">Profile</a>
+                            </div>
+                            <div class="logout-button">
+                                <a href="/logout">Logout</a>
+                            </div>
+                        </div>
+                </div>
+    <div class="main_content">
+        <h3>Search Results: Find Someone</h3>
+
+        <!-- JUST FOR SHOW -->
+        <!-- <div class="results"></div>
+        <img class="profile_pic" src="https://www.shareicon.net/data/128x128/2016/07/10/119669_people_512x512.png" alt="profile_pic">
+            <p class="search_result"> <a href="user.profile">Sample Sampleton</a>
+            <button type="submit" class="email" name="email">Email</button>
+        </div> -->
+        {% if results %}
+        {% for profile in results %}
+        <div class="search_result">
+            <img class="profile_pic" src="{{profile.image}}" alt="profile_pic">
+            <h4>
+                <a href="/profile/{{profile.id}}">{{profile.first_name|title}} {{profile.last_name|title}}</a>
+            </h4>
+            <form action="mailto:{{profile.email}}?subject=Interested in connecting - fellow ninja!">
+            <input name="mail" value="Email" type="submit" class="button">
+            </form>
+            {% endfor %}
+            {% else %}
+            <br>
+            <h3>Sorry, your search yielded no results. Search again!</h3>
+           
+            {% endif %}
+        </div>
+       
+       
+    </div>
+    </div>
+</body>
+
+</html>

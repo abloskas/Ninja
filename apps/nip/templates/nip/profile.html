@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'nip/css/style.css' %}" media="screen" title="no title"  charset="utf-8">
+    <link rel="stylesheet" href="../../static/nip/style.css">
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
+    <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	
+	<title>Ninja Profile: {{user.first_name|title}} {{user.last_name | title}}</title>
+	<style>
+	 .left-LOGO1{
+        margin: -55px 0px 0px -35px;
+	}
+	.btn-left{
+            float: right;
+            margin-right: 100px;
+    }
+	.btn{
+		float: left;
+	}
+    .header1{
+    margin: 0px 0 0 0;
+    height: 65px;
+	}
+	.main_img{
+		border: 1px solid black;
+		border-radius: 100px;
+		margin-top: 20px;
+		margin-left: 60px;
+		margin-bottom: 5px;
+		height: 200px;
+		width: 200px;
+	}
+	.left_side h3{
+		font-size: 2em;
+		margin: 50px 10px 10px 65px;
+	}
+	.content, .strengths{
+		margin: 40px 0 0 75px;
+	}
+	.content h4 {
+		font-size: 1.3em;
+	}
+	.content a {
+		text-decoration: none;
+		color: black;
+	}
+	.content p{
+		font-size: 1em;
+		margin-left: 20px;
+	}
+	.strengths h3{
+		font-size: 1.3em;
+	}
+	.strengths ol{
+		font-size: 1em;
+		margin-left: 20px;
+	}
+	.whole{
+		margin: 0 0 0 0;
+	}
+	</style>
+</head>
+<body>
+		<div class="header header1">
+                <div class="left-LOGO left-LOGO1">
+                    <a href="/home"><img class="logo" src="https://mir-cdn.behance.net/v1/rendition/project_modules/disp/70702f63826029.5abd519e04f31.png" alt="nip_logo" /></a>
+                </div>
+                <div class="right-boxes">
+                        <div class="logout-button">
+                                <a href="/map">Map</a>
+                            </div>
+                        <div class="profile-button">
+                            <a href="/profile/{{request.session.id}}">Profile</a>
+                        </div>
+                        <div class="logout-button">
+                            <a href="/logout">Logout</a>
+                        </div>
+                    </div>
+            </div>
+			<div class="whole">
+	<div class="left_side">
+		{% if request.session.id == user.id %}
+			<form action="/edit/{{user.id}}" method=POST>
+				{% csrf_token %}
+				<input type="submit" value="Edit Profile" class="button btn-left">
+			</form>
+			{% endif %}
+		<h3>{{user.first_name|title}} {{user.last_name|title}}</h3>
+		<img src="{{user.image}}" class="main_img" />
+
+		<div class="content">
+		<h4>You can find {{user.first_name | title}} at:</h4>
+		<br>
+		<p><a href="mailto:{{user.email}}">{{user.email}}</a></p>
+		<br>
+		<p><a href="{{user.linkedin}}">LinkedIn</a></p>
+		<br>
+		<p><a href="{{user.github}}">Github</a></p>
+			<br>
+		{% if user.facebook %}
+		<p><a href="{{user.facebook}}">Facebook</a></p>
+			<br>
+		{% endif %}
+		{% if user.instagram %}
+		<p><a href="{{user.instagram}}">Instagram</a></p>
+			 <br>
+		{% endif %}
+		{% if user.slack %}
+		<p><a href="{{user.slack}}">Slack</a></p>
+			<br>
+		{% endif %}
+	</div>
+	</div>
+	
+		<div class="strengths">
+			<h3>Strengths</h3>
+			<br>
+			{% if not user.strengths.all %}
+			<p>You do not have any strengths!</p>
+			<br>
+			<form action="/strengths/{{user.id}}" method=POST>
+				{% csrf_token %}
+				<input type="submit" value="Add Strengths" class="button btn">
+			</form>
+			{% else %}
+			<ol>
+			{% for strength in user.strengths.all %}
+				<li>{{strength.name}}</li>
+				<br>
+			{% endfor %}
+			</ol>
+			<form action="/strengths/{{user.id}}" method=POST>
+				{% csrf_token %}
+				<input type="submit" value="Edit Strengths" class="button btn">
+			</form>
+	{% endif %}
+</div>
+</div>
+</body>
+</html>
